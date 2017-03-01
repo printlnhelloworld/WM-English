@@ -37,7 +37,7 @@ public class Login extends BasicActivity implements View.OnClickListener {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UPDATE_TEXT1:
-                    showToast("发生未知错误");
+                    showToast("网络连接超时");
                     break;
                 case UPDATE_TEXT2:
                     showToast("请输入正确的账号和密码");
@@ -77,39 +77,47 @@ public class Login extends BasicActivity implements View.OnClickListener {
                 String usernameText = username.getText().toString();
                 String passwordText = password.getText().toString();
                 //验证邮箱和密码是否符合格式
-                if (!(Validator.checkEmail(usernameText) && Validator.checkPassword(passwordText))) {
+                if (!(Validator.checkEmail(usernameText) || Validator.checkPassword(passwordText))) {
                     showToast("请输入正确的用户名/邮箱和密码");
                 } else {
                     //账号密码生成json字符串
+//                    RequestBody requestBody = new FormBody.Builder()
+//                            .add("account",usernameText ).add("password", passwordText)
+//                            .build();
                     LoginAccount loginAccount = new LoginAccount(usernameText, passwordText);
                     Gson gson = new Gson();
                     String json = gson.toJson(loginAccount);
                     //向后台传送登录的账号和密码并获取返回值
-                    HttpUtil.postJson("xxxxxx", json, new okhttp3.Callback() {
+                    HttpUtil.postJson("http://lincloud.me:8080/app/app_login", json, new okhttp3.Callback() {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            //成功获取返回值
-
-                            Gson gson = new Gson();
-                            Status resJson = gson.fromJson(response.body().string(), Status.class);
-                            if (resJson.status.equals("0")) {
-                                Message message = new Message();
-                                message.what = UPDATE_TEXT2;
-                                handler.sendMessage(message);
-                            } else if (resJson.status.equals("1")) {
-                                Intent intent = new Intent(Login.this, MainActivity.class);
-                                startActivity(intent);
-                            }else {
-                                showToast("发生未知错误");
+                            //成功获取返回值;
+                            try {
+                                Gson gson = new Gson();
+                                //OkHttp请求回调中response.body().string()只能有效调用一次
+                                String jsonData = response.body().string();
+                                Log.d(TAG, jsonData);
+                                Status resJson = gson.fromJson(jsonData, Status.class);
+                                if (resJson.getStatus() == 0) {
+                                    Message message = new Message();
+                                    message.what = UPDATE_TEXT2;
+                                    handler.sendMessage(message);
+                                } else if (resJson.getStatus() == 1 ) {
+                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.d(TAG, "Gson解析错误");
                             }
+
+
                         }
 
                         @Override
                         public void onFailure(Call call, IOException e) {
                             //传送失败
-                            Intent intent = new Intent(Login.this, MainActivity.class);
-                            startActivity(intent);
-
                             Message message = new Message();
                             message.what = UPDATE_TEXT1;
                             handler.sendMessage(message);

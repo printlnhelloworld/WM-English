@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,7 +17,8 @@
             android:layout_height="180dp"
             android:layout_marginBottom="10dp"
             app:rollviewpager_play_delay="3000"/>
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -30,7 +32,7 @@
                     android:layout_margin="10dp"
                     android:textSize="16sp"
                     android:layout_alignParentLeft="true"
-                    android:text="短对话"/>
+                    android:text="情景模拟"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -41,8 +43,40 @@
                     android:layout_marginRight="10dp"
                     android:text="更多资源>"/>
             </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/short_dialog1"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight='1'
+                    android:scaleType="centerCrop"/>
+
+                <ImageView
+                    android:id="@+id/short_dialog2"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight='1'
+                    android:scaleType="centerCrop"/>
+
+                <ImageView
+                    android:id="@+id/short_dialog3"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight='1'
+                    android:scaleType="centerCrop"/>
+
+                <ImageView
+                    android:id="@+id/short_dialog4"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight='1'
+                    android:scaleType="centerCrop"/>
+
+            </LinearLayout>
+        </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="1000dp" />

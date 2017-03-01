@@ -19,9 +19,9 @@ public class HttpUtil {
     public static void postJson( String url,String json,okhttp3.Callback callback){
         //
         OkHttpClient client = new OkHttpClient();
-        client.newBuilder().connectTimeout(10, TimeUnit.SECONDS);
-        client.newBuilder().readTimeout(10, TimeUnit.SECONDS);
-        client.newBuilder().writeTimeout(10, TimeUnit.SECONDS);
+        client.newBuilder().connectTimeout(10, TimeUnit.SECONDS);//设置超时时间
+        client.newBuilder().readTimeout(10, TimeUnit.SECONDS);//设置读取超时时间
+        client.newBuilder().writeTimeout(10, TimeUnit.SECONDS);//设置写入超时时间
         RequestBody requestBody = RequestBody.create(JSON,json);
         Request request = new Request.Builder()
                 .url(url)
@@ -30,5 +30,12 @@ public class HttpUtil {
         client.newCall(request).enqueue(callback);
 
 
+    }
+    public static void get(String address, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(address)
+                .build();
+        client.newCall(request).enqueue(callback);
     }
 }

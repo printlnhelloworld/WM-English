@@ -5,9 +5,21 @@ package com.example.yzt.wm_english.login;
  */
 
 public class Status {
-    String status;
-    public Status(String status) {
-        super();
+    private int status;
+    private String nickname;
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setnickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getnickname() {
+        return nickname;
     }
 }

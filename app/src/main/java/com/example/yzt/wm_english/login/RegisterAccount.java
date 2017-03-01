@@ -7,14 +7,14 @@ package com.example.yzt.wm_english.login;
 public class RegisterAccount {
     private String nickname;
 
-    private String Email;
+    private String email;
 
     private String password;
 
     public RegisterAccount(String nickname,String Email, String password) {
         super();
         this.nickname = nickname;
-        this.Email = Email;
+        this.email = Email;
         this.password = password;
     }
 }

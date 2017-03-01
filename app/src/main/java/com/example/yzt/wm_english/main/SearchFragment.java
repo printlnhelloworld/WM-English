@@ -13,7 +13,7 @@ import com.example.yzt.wm_english.R;
  * Created by YZT on 2017/2/7.
  */
 
-public class SrearchFragment extends Fragment {
+public class SearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

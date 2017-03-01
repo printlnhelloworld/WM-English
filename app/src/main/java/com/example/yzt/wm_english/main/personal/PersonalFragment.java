@@ -1,4 +1,4 @@
-package com.example.yzt.wm_english.main;
+package com.example.yzt.wm_english.main.personal;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,11 +13,12 @@ import com.example.yzt.wm_english.R;
  * Created by YZT on 2017/2/7.
  */
 
-public class TalkingFragment extends Fragment {
+public class PersonalFragment extends Fragment{
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.talking_layout, container, false);
+        View view = inflater.inflate(R.layout.personal_layout, container, false);
         return view;
     }
 }
