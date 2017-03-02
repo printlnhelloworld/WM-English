@@ -13,14 +13,17 @@ import android.widget.ImageView;
 
 import com.example.yzt.wm_english.HttpUtil;
 import com.example.yzt.wm_english.R;
-import com.example.yzt.wm_english.login.Status;
 import com.example.yzt.wm_english.main.MainActivity;
+import com.example.yzt.wm_english.main.Mainres;
 import com.google.gson.Gson;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -36,13 +39,20 @@ public class ListeningFragment extends Fragment {
     private ImageView shortDialogue2;
     private ImageView shortDialogue3;
     private ImageView shortDialogue4;
+    private List<Mainres.Image> bannerPictureURLs = new ArrayList<>();;
+    final MainActivity activity = (MainActivity) getActivity();
+    private View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.listening_layout, container, false);
+        view = inflater.inflate(R.layout.listening_layout, container, false);
+//        ProgressDialog progressDialog = new ProgressDialog(activity);
+//        progressDialog.setMessage("Loading...");
+//        progressDialog.setCancelable(false);
+        new DownloadTask().execute();
+
         //图片轮播加载
-        initPhotoCarousel(view);
         //短对话加载
         initShortDialogue(view);
         return view;
@@ -57,19 +67,49 @@ public class ListeningFragment extends Fragment {
         //存放在子线程中运行的代码,不可以进行UI操作,如需进行UI操作,可调用publishProgress()
         @Override
         protected Boolean doInBackground(Void... params) {
-//            int t = 1;
-//            publishProgress(t);
+            int id = (int)getArguments().get("id");
+            Log.d(TAG,"found id is"+id );
+            HttpUtil.get("http://lincloud.me:8080/app/app_login" + "?id=" + id, new okhttp3.Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //成功获取返回值;
+                    try {
+                        String jsonData = response.body().string();
+                        Gson gson = new Gson();
+                        Mainres res2 = new Mainres();
+                        String imgUrl = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488477498931&di=8b321ca1764e0d6ef8d624bcdc7e68df&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Fface%2F07296c99878be87a09bae09408622d250507260f.jpg";
+                        String json = "{'pageNum': 1,'pageSize': 5,'images':[{'id': 1, 'imgUrl': '"+imgUrl+"' , 'resUrl': 'http://sdfsdf/detail/id'},{'id': 2, 'imgUrl': '"+imgUrl+"' , 'resUrl': 'http://sdfsdf/detail/id'}],'resource':[{'id': 1, 'title': 'xxx', 'elaborate': 'xxx', 'wordNum': 222, 'imgUrl':'http://123123123', 'resUrl': 'http://123123123/detail/id'},{'id': 2, 'title': 'xxx', 'elaborate': 'xxx', 'wordNum': 222, 'imgUrl':'http://123123123', 'resUrl': 'http://123123123/detail/id'},{'id': 3, 'title': 'xxx', 'elaborate': 'xxx', 'wordNum': 222, 'imgUrl':'http://123123123', 'resUrl': 'http://123123123/detail/id'}]}";
+                        Mainres res = gson.fromJson(json, Mainres.class);
+                        bannerPictureURLs = res.images;
+                        Log.d(TAG, bannerPictureURLs.get(0).imgUrl);
+                        publishProgress(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+            });
             return null;
         }
         //进行UI操作,数据由publishProgress()传递
         @Override
         protected void onProgressUpdate(Integer... values) {
+            if (values[0] == 1){
+                initPhotoCarousel(view);
+            }
             super.onProgressUpdate(values);
         }
         //后台任务执行完毕时调用,参数由后台任务返回的数据,可更新UI,如关闭对话框,提醒任务执行结果等
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+//            progressDialog.hide();
         }
     }
     private void initShortDialogue(View view) {
@@ -93,22 +133,7 @@ public class ListeningFragment extends Fragment {
         //设置透明度
         mRollViewPager.setAnimationDurtion(500);
         //设置适配器
-        HttpUtil.get("http://www.badu.com", new okhttp3.Callback() {
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //成功获取返回值
-                Log.d(TAG, response.body().string());
-                Gson gson = new Gson();
-                Status resJson = gson.fromJson(response.body().string(), Status.class);
-            }
 
-            @Override
-            public void onFailure(Call call, IOException e) {
-                //传送失败
-
-                e.printStackTrace();
-            }
-        });
         mRollViewPager.setAdapter(new TestLoopAdapter(mRollViewPager));
 
         //设置指示器（顺序依次）
@@ -125,16 +150,10 @@ public class ListeningFragment extends Fragment {
 
     private class TestLoopAdapter extends LoopPagerAdapter {
 
-        final MainActivity activity = (MainActivity) getActivity();
 
-        private int[] imgs = {
-                R.drawable.img1,
-                R.drawable.img2,
-                R.drawable.img3,
-                R.drawable.img4,
-        };
 
-        private int count = imgs.length; // banner上图片的数量
+
+        private int count = bannerPictureURLs.size(); // banner上图片的数量
 
         public TestLoopAdapter(RollPagerView viewPager) {
             super(viewPager);
@@ -145,8 +164,13 @@ public class ListeningFragment extends Fragment {
         public View getView(ViewGroup container, int position) {
             final int picNo = position + 1;
             ImageView view = new ImageView(container.getContext());
-//            Picasso.with(activity).load(bannerPictureURLs.get(position)).into(view);  // 加载网络图片
-            view.setImageResource(imgs[position]);
+            Log.d(TAG, "getView:f ");
+            Picasso.with(container.getContext()).load(bannerPictureURLs.get(position).imgUrl)
+                    .placeholder(R.drawable.wrong_name)
+                    .error(R.drawable.wrong_name).
+                    into(view);  // 加载网络图片
+            Log.d(TAG, "getView: ");
+//            view.setImageResource(imgs[position]);
             view.setScaleType(ImageView.ScaleType.CENTER_CROP);
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             view.setOnClickListener(new View.OnClickListener(){

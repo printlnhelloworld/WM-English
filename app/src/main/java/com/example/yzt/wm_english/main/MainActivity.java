@@ -1,5 +1,7 @@
 package com.example.yzt.wm_english.main;
 
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,7 +19,7 @@ import com.example.yzt.wm_english.main.personal.PersonalFragment;
 import com.example.yzt.wm_english.main.talking.TalkingFragment;
 
 public class MainActivity extends BasicActivity implements View.OnClickListener {
-
+    private static final String TAG = "MainActivity";
     //定义四个Fragment对象
     private ListeningFragment fg1;
     private TalkingFragment fg2;
@@ -44,7 +46,6 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
     private int dark = 0xff000000;
     // 定义FragmentManager对象管理器
     private FragmentManager fragmentManager = getSupportFragmentManager();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,28 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
         }
         initView();
         setChoiceItem(0);
+    }
+    class DownloadTask extends AsyncTask<Void, Integer, Boolean> {
+        //任务开始前调用,进行界面的初始化操作,如显示进度对话框
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        //存放在子线程中运行的代码,不可以进行UI操作,如需进行UI操作,可调用publishProgress()
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            return null;
+        }
+        //进行UI操作,数据由publishProgress()传递
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+        //后台任务执行完毕时调用,参数由后台任务返回的数据,可更新UI,如关闭对话框,提醒任务执行结果等
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+//            progressDialog.hide();
+        }
     }
     private void initView() {
 // 初始化底部导航栏的控件
@@ -100,6 +123,10 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
      * @param index 选项卡的标号：0, 1, 2, 3
      */
     private void setChoiceItem(int index) {
+        SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+        int id = pref.getInt("id", 0);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         clearChoice(); // 清空, 重置选项, 隐藏所有Fragment
         hideFragments(fragmentTransaction);
@@ -111,6 +138,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
 // 如果fg1为空，则创建一个并添加到界面上
                 if (fg1 == null) {
                     fg1 = new ListeningFragment();
+                    fg1.setArguments(bundle);
                     fragmentTransaction.add(R.id.content, fg1);
                 } else {
 // 如果不为空，则直接将它显示出来
@@ -123,6 +151,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
                 secondLayout.setBackgroundColor(gray);
                 if (fg2 == null) {
                     fg2 = new TalkingFragment();
+                    fg2.setArguments(bundle);
                     fragmentTransaction.add(R.id.content, fg2);
                 } else {
                     fragmentTransaction.show(fg2);
@@ -134,6 +163,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
                 thirdLayout.setBackgroundColor(gray);
                 if (fg3 == null) {
                     fg3 = new SearchFragment();
+                    fg3.setArguments(bundle);
                     fragmentTransaction.add(R.id.content, fg3);
                 } else {
                     fragmentTransaction.show(fg3);
@@ -145,6 +175,7 @@ public class MainActivity extends BasicActivity implements View.OnClickListener 
                 fourthLayout.setBackgroundColor(gray);
                 if (fg4 == null) {
                     fg4 = new PersonalFragment();
+                    fg4.setArguments(bundle);
                     fragmentTransaction.add(R.id.content, fg4);
                 } else {
                     fragmentTransaction.show(fg4);

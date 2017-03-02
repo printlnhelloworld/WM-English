@@ -6,7 +6,7 @@ package com.example.yzt.wm_english.login;
 
 public class Status {
     private int status;
-    private String nickname;
+    private int id;
     public void setStatus(int status) {
         this.status = status;
     }
@@ -15,11 +15,11 @@ public class Status {
         return status;
     }
 
-    public void setnickname(String nickname) {
-        this.nickname = nickname;
+    public void setid(int id) {
+        this.id = id;
     }
 
-    public String getnickname() {
-        return nickname;
+    public int getid() {
+        return id;
     }
 }

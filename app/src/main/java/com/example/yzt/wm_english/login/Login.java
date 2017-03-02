@@ -1,6 +1,7 @@
 package com.example.yzt.wm_english.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -103,6 +104,9 @@ public class Login extends BasicActivity implements View.OnClickListener {
                                     message.what = UPDATE_TEXT2;
                                     handler.sendMessage(message);
                                 } else if (resJson.getStatus() == 1 ) {
+                                    SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                                    editor.putInt("id", resJson.getid());
+                                    editor.apply();
                                     Intent intent = new Intent(Login.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();
