@@ -6,19 +6,19 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.yzt.wm_english.BasicActivity;
 import com.example.yzt.wm_english.R;
 import com.example.yzt.wm_english.main.listening.ListeningFragment;
 import com.example.yzt.wm_english.main.personal.PersonalFragment;
 import com.example.yzt.wm_english.main.talking.TalkingFragment;
 
-public class MainActivity extends BasicActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
     //定义四个Fragment对象
     private ListeningFragment fg1;

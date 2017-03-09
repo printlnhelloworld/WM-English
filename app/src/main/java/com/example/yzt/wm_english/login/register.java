@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.example.yzt.wm_english.BasicActivity;
 import com.example.yzt.wm_english.HttpUtil;
 import com.example.yzt.wm_english.R;
+import com.example.yzt.wm_english.ToastUtils;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -47,13 +48,13 @@ public class register extends BasicActivity implements View.OnClickListener{
                 String passwordText = password.getText().toString();
                 String repeatedText = repeated.getText().toString();
                 if (!Validator.checkUsername(usernameText)){
-                    showToast("用户名请以字母为开头,并限制在6-16字符之间");
+                    ToastUtils.showToast(register.this, "用户名请以字母为开头,并限制在6-16字符之间");
                 } else if (!Validator.checkEmail(emailText)) {
-                    showToast("请输入正确的邮箱地址");
+                    ToastUtils.showToast(register.this, "请输入正确的邮箱地址");
                 } else if (!Validator.checkPassword(passwordText)) {
-                    showToast("密码请不要包含特殊字符，并限制在6-16字节之间");
+                    ToastUtils.showToast(register.this, "密码请不要包含特殊字符，并限制在6-16字节之间");
                 } else if (!passwordText.equals(repeatedText)) {
-                    showToast("两次输入的密码不相同");
+                    ToastUtils.showToast(register.this, "两次输入的密码不相同");
                 } else {
 //                    RequestBody requestBody = new FormBody.Builder()
 //                            .add("email",emailText ).add("password", passwordText).add("nickname",usernameText)
@@ -71,15 +72,15 @@ public class register extends BasicActivity implements View.OnClickListener{
                                 Log.d(TAG,jsonData);
                                 Status resJson = gson.fromJson(jsonData,Status.class);
                                 if (resJson.getStatus() == 0) {
-                                    showToast("注册成功");
+                                    ToastUtils.showToast(register.this, "注册成功");
                                     Intent intent = new Intent(register.this,LoginSuccess.class);
                                     startActivity(intent);
                                 } else if (resJson.getStatus() == 1) {
-                                    showToast("该用户名已被占用");
+                                    ToastUtils.showToast(register.this, "该用户名已被占用");
                                 } else if (resJson.getStatus() == 2) {
-                                    showToast("该邮箱已被注册");
+                                    ToastUtils.showToast(register.this, "该邮箱已被注册");
                                 }else{
-                                    showToast("发生未知错误");
+                                    ToastUtils.showToast(register.this, "发生未知错误");
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

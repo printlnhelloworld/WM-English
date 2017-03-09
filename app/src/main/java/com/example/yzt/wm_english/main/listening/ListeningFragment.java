@@ -1,25 +1,29 @@
 package com.example.yzt.wm_english.main.listening;
 
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.yzt.wm_english.HttpUtil;
 import com.example.yzt.wm_english.R;
-import com.example.yzt.wm_english.main.MainActivity;
+import com.example.yzt.wm_english.ToastUtils;
 import com.example.yzt.wm_english.main.Mainres;
+import com.example.yzt.wm_english.main.ResourceAdapter;
 import com.google.gson.Gson;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,79 +43,88 @@ public class ListeningFragment extends Fragment {
     private ImageView shortDialogue2;
     private ImageView shortDialogue3;
     private ImageView shortDialogue4;
-    private List<Mainres.Image> bannerPictureURLs = new ArrayList<>();;
-    final MainActivity activity = (MainActivity) getActivity();
+    private List<Mainres.Image> bannerPictureURLs = new ArrayList<>();
+    private List<Mainres.Resource> resourceList = new ArrayList<>();
+
     private View view;
+    public static final int UPDATE_TEXT1 = 1;
+    public static final int UPDATE_TEXT2 = 2;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_TEXT1:
+                    Log.d(TAG, "下载后");
+                    initPhotoCarousel(view);
+                    initShortDialogue(view);
+                    RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                    layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    recyclerView.setLayoutManager(layoutManager);
+                    ResourceAdapter adapter = new ResourceAdapter(resourceList);
+                    recyclerView.setAdapter(adapter);
+                    break;
+                case UPDATE_TEXT2:
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.listening_layout, container, false);
+        HttpUtil.get("http://lincloud.me:8080/app/index", new okhttp3.Callback() {
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //成功获取返回值;
+                try {
+                    int id = (int)getArguments().get("id");
+                    String jsonData = response.body().string();
+                    Log.d(TAG, jsonData);
+                    Gson gson = new Gson();
+                    Mainres res = gson.fromJson(jsonData, Mainres.class);
+                    bannerPictureURLs = res.images;
+                    resourceList = res.resources;
+                    Log.d(TAG, "httpSuccess");
+                    Message message = new Message();
+                    message.what = UPDATE_TEXT1;
+                    handler.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Log.d(TAG, "加载前");
 //        ProgressDialog progressDialog = new ProgressDialog(activity);
 //        progressDialog.setMessage("Loading...");
 //        progressDialog.setCancelable(false);
-        new DownloadTask().execute();
+
 
         //图片轮播加载
         //短对话加载
-        initShortDialogue(view);
+
         return view;
     }
 
-    class DownloadTask extends AsyncTask<Void, Integer, Boolean> {
-        //任务开始前调用,进行界面的初始化操作,如显示进度对话框
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        //存放在子线程中运行的代码,不可以进行UI操作,如需进行UI操作,可调用publishProgress()
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            int id = (int)getArguments().get("id");
-            Log.d(TAG,"found id is"+id );
-            HttpUtil.get("http://lincloud.me:8080/app/app_login" + "?id=" + id, new okhttp3.Callback() {
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    //成功获取返回值;
-                    try {
-                        String jsonData = response.body().string();
-                        Gson gson = new Gson();
-                        Mainres res2 = new Mainres();
-                        String imgUrl = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488477498931&di=8b321ca1764e0d6ef8d624bcdc7e68df&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Fface%2F07296c99878be87a09bae09408622d250507260f.jpg";
-                        String json = "{'pageNum': 1,'pageSize': 5,'images':[{'id': 1, 'imgUrl': '"+imgUrl+"' , 'resUrl': 'http://sdfsdf/detail/id'},{'id': 2, 'imgUrl': '"+imgUrl+"' , 'resUrl': 'http://sdfsdf/detail/id'}],'resource':[{'id': 1, 'title': 'xxx', 'elaborate': 'xxx', 'wordNum': 222, 'imgUrl':'http://123123123', 'resUrl': 'http://123123123/detail/id'},{'id': 2, 'title': 'xxx', 'elaborate': 'xxx', 'wordNum': 222, 'imgUrl':'http://123123123', 'resUrl': 'http://123123123/detail/id'},{'id': 3, 'title': 'xxx', 'elaborate': 'xxx', 'wordNum': 222, 'imgUrl':'http://123123123', 'resUrl': 'http://123123123/detail/id'}]}";
-                        Mainres res = gson.fromJson(json, Mainres.class);
-                        bannerPictureURLs = res.images;
-                        Log.d(TAG, bannerPictureURLs.get(0).imgUrl);
-                        publishProgress(1);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
-
-                }
-
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            return null;
-        }
-        //进行UI操作,数据由publishProgress()传递
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            if (values[0] == 1){
-                initPhotoCarousel(view);
-            }
-            super.onProgressUpdate(values);
-        }
-        //后台任务执行完毕时调用,参数由后台任务返回的数据,可更新UI,如关闭对话框,提醒任务执行结果等
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-//            progressDialog.hide();
-        }
-    }
     private void initShortDialogue(View view) {
         shortDialogue1 = (ImageView) view.findViewById(R.id.short_dialog1);
         shortDialogue2 = (ImageView) view.findViewById(R.id.short_dialog2);
@@ -164,11 +177,14 @@ public class ListeningFragment extends Fragment {
         public View getView(ViewGroup container, int position) {
             final int picNo = position + 1;
             ImageView view = new ImageView(container.getContext());
-            Log.d(TAG, "getView:f ");
-            Picasso.with(container.getContext()).load(bannerPictureURLs.get(position).imgUrl)
-                    .placeholder(R.drawable.wrong_name)
-                    .error(R.drawable.wrong_name).
-                    into(view);  // 加载网络图片
+            Glide.with(ListeningFragment.this)
+                    .load(bannerPictureURLs.get(position).imgUrl)
+                    .into(view);
+//            Picasso.with(container.getContext())
+//                    .load(bannerPictureURLs.get(position).imgUrl)
+//                    .placeholder(R.drawable.wrong_name)
+//                    .error(R.drawable.wrong_name).
+//                    into(view);  // 加载网络图片
             Log.d(TAG, "getView: ");
 //            view.setImageResource(imgs[position]);
             view.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -177,7 +193,7 @@ public class ListeningFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    activity.showToast( "点击了第" + picNo + "张图片");
+                    ToastUtils.showToast(getContext(),  "点击了第" + picNo + "张图片");
 
                 }
             });

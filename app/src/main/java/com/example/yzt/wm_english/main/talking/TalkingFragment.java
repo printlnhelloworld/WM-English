@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.example.yzt.wm_english.HttpUtil;
 import com.example.yzt.wm_english.R;
+import com.example.yzt.wm_english.ToastUtils;
 import com.example.yzt.wm_english.login.Status;
 import com.example.yzt.wm_english.main.MainActivity;
 import com.google.gson.Gson;
@@ -124,7 +125,7 @@ public class TalkingFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    activity.showToast( "点击了第" + picNo + "张图片");
+                    ToastUtils.showToast( getContext(), "点击了第" + picNo + "张图片");
 
                 }
             });

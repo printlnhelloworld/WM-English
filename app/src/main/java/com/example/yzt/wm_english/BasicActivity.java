@@ -3,6 +3,7 @@ package com.example.yzt.wm_english;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -10,6 +11,7 @@ import android.widget.Toast;
  */
 
 public class BasicActivity extends AppCompatActivity{
+    private static final String TAG = "BasicActivity";
     private Toast mToast;
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
@@ -18,6 +20,7 @@ public class BasicActivity extends AppCompatActivity{
     }
     //Toast 单例
     public void showToast(String text) {
+        Log.d(TAG, "showToast: ");
         if(mToast == null) {
             mToast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
         } else {

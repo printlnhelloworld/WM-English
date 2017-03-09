@@ -6,15 +6,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.yzt.wm_english.BasicActivity;
 import com.example.yzt.wm_english.HttpUtil;
 import com.example.yzt.wm_english.R;
+import com.example.yzt.wm_english.ToastUtils;
 import com.example.yzt.wm_english.main.MainActivity;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -27,7 +28,7 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class Login extends BasicActivity implements View.OnClickListener {
+public class Login extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "Login";
     private EditText username;
     private EditText password;
@@ -38,10 +39,10 @@ public class Login extends BasicActivity implements View.OnClickListener {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UPDATE_TEXT1:
-                    showToast("网络连接超时");
+                    ToastUtils.showToast(Login.this,"网络连接超时");
                     break;
                 case UPDATE_TEXT2:
-                    showToast("请输入正确的账号和密码");
+                    ToastUtils.showToast(Login.this,"请输入正确的账号和密码");
                     break;
                 default:
                     break;
@@ -79,7 +80,7 @@ public class Login extends BasicActivity implements View.OnClickListener {
                 String passwordText = password.getText().toString();
                 //验证邮箱和密码是否符合格式
                 if (!(Validator.checkEmail(usernameText) || Validator.checkPassword(passwordText))) {
-                    showToast("请输入正确的用户名/邮箱和密码");
+                    ToastUtils.showToast(Login.this, "请输入正确的用户名/邮箱和密码");
                 } else {
                     //账号密码生成json字符串
 //                    RequestBody requestBody = new FormBody.Builder()
