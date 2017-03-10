@@ -1,9 +1,9 @@
 package com.example.yzt.wm_english.main.listening;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,31 +47,6 @@ public class ListeningFragment extends Fragment {
     private List<Mainres.Resource> resourceList = new ArrayList<>();
 
     private View view;
-    public static final int UPDATE_TEXT1 = 1;
-    public static final int UPDATE_TEXT2 = 2;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UPDATE_TEXT1:
-                    Log.d(TAG, "下载后");
-                    initPhotoCarousel(view);
-                    initShortDialogue(view);
-                    RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-                    layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                    recyclerView.setLayoutManager(layoutManager);
-                    ResourceAdapter adapter = new ResourceAdapter(resourceList);
-                    recyclerView.setAdapter(adapter);
-                    break;
-                case UPDATE_TEXT2:
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,47 +58,82 @@ public class ListeningFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.listening_layout, container, false);
-        HttpUtil.get("http://lincloud.me:8080/app/index", new okhttp3.Callback() {
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //成功获取返回值;
-                try {
-                    int id = (int)getArguments().get("id");
-                    String jsonData = response.body().string();
-                    Log.d(TAG, jsonData);
-                    Gson gson = new Gson();
-                    Mainres res = gson.fromJson(jsonData, Mainres.class);
-                    bannerPictureURLs = res.images;
-                    resourceList = res.resources;
-                    Log.d(TAG, "httpSuccess");
-                    Message message = new Message();
-                    message.what = UPDATE_TEXT1;
-                    handler.sendMessage(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-        });
+        initPhotoCarousel(view);
+        new DownLoadTask().execute();
         Log.d(TAG, "加载前");
-//        ProgressDialog progressDialog = new ProgressDialog(activity);
-//        progressDialog.setMessage("Loading...");
-//        progressDialog.setCancelable(false);
 
 
-        //图片轮播加载
-        //短对话加载
 
         return view;
     }
 
+    class DownLoadTask extends AsyncTask<String, Integer, Integer> {
+        ProgressDialog dialog = new ProgressDialog(getContext());
+        @Override
+        protected void onPreExecute() {
+            dialog.show();
+            dialog.setMessage("Loading...");
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            HttpUtil.get("http://lincloud.me:8080/app/index", new okhttp3.Callback() {
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //成功获取返回值;
+                    try {
+                        int id = (int)getArguments().get("id");
+                        String jsonData = response.body().string();
+                        Log.d(TAG, jsonData);
+                        Gson gson = new Gson();
+                        Mainres res = gson.fromJson(jsonData, Mainres.class);
+                        bannerPictureURLs = res.images;
+                        resourceList = res.resources;
+                        Log.d(TAG, "httpSuccess");
+//                        Message message = new Message();
+//                        message.what = UPDATE_TEXT1;
+//                        handler.sendMessage(message);
+                        publishProgress(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            switch (values[0]) {
+                case 1:
+                    Log.d(TAG, "下载后");
+                    mRollViewPager.setAdapter(new TestLoopAdapter(mRollViewPager));
+                    mRollViewPager.getViewPager().getAdapter().notifyDataSetChanged();// 更新banner图片
+                    initShortDialogue(view);
+                    RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                    layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                    recyclerView.setLayoutManager(layoutManager);
+                    ResourceAdapter adapter = new ResourceAdapter(resourceList);
+                    recyclerView.setAdapter(adapter);
+                    break;
+                default:
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            dialog.dismiss();
+        }
+    }
 
     private void initShortDialogue(View view) {
         shortDialogue1 = (ImageView) view.findViewById(R.id.short_dialog1);
@@ -146,9 +156,6 @@ public class ListeningFragment extends Fragment {
         //设置透明度
         mRollViewPager.setAnimationDurtion(500);
         //设置适配器
-
-        mRollViewPager.setAdapter(new TestLoopAdapter(mRollViewPager));
-
         //设置指示器（顺序依次）
         //自定义指示器图片
         //设置圆点指示器颜色

@@ -44,7 +44,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:9.8.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.jude:rollviewpager:1.2.9'
+    compile 'com.jude:rollviewpager:1.4.6'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:design:25.2.0'

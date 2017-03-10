@@ -15,13 +15,12 @@ android:background="#F6F2FB">
         android:id="@+id/roll_view_pager"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:layout_marginBottom="10dp"
-        app:rollviewpager_play_delay="3000"/>
+        app:rollviewpager_play_delay="3000"
+        />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginBottom="10dp"
         android:background="#FFFFFF">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -50,28 +49,28 @@ android:background="#F6F2FB">
             <ImageView
                 android:id="@+id/short_dialog1"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:layout_weight='1'
                 android:scaleType="centerCrop"/>
 
             <ImageView
                 android:id="@+id/short_dialog2"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:layout_weight='1'
                 android:scaleType="centerCrop"/>
 
             <ImageView
                 android:id="@+id/short_dialog3"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:layout_weight='1'
                 android:scaleType="centerCrop"/>
 
             <ImageView
                 android:id="@+id/short_dialog4"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:layout_weight='1'
                 android:scaleType="centerCrop"/>
 
