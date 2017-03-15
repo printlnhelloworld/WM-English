@@ -8,10 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.yzt.wm_english.BasicActivity;
-import com.example.yzt.wm_english.HttpUtil;
+import com.example.yzt.wm_english.Units.BasicActivity;
+import com.example.yzt.wm_english.Units.HttpUtil;
 import com.example.yzt.wm_english.R;
-import com.example.yzt.wm_english.ToastUtils;
+import com.example.yzt.wm_english.Units.ToastUtils;
 import com.google.gson.Gson;
 
 import java.io.IOException;

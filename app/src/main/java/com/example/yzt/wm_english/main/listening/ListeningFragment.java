@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.example.yzt.wm_english.HttpUtil;
+import com.example.yzt.wm_english.Units.HttpUtil;
 import com.example.yzt.wm_english.R;
-import com.example.yzt.wm_english.ToastUtils;
+import com.example.yzt.wm_english.Units.ToastUtils;
 import com.example.yzt.wm_english.main.Mainres;
 import com.example.yzt.wm_english.main.ResourceAdapter;
 import com.google.gson.Gson;
@@ -83,14 +83,14 @@ public class ListeningFragment extends Fragment {
                 public void onResponse(Call call, Response response) throws IOException {
                     //成功获取返回值;
                     try {
-                        int id = (int)getArguments().get("id");
+//                        int id = (int)getArguments().get("id");
                         String jsonData = response.body().string();
                         Log.d(TAG, jsonData);
                         Gson gson = new Gson();
                         Mainres res = gson.fromJson(jsonData, Mainres.class);
                         bannerPictureURLs = res.images;
                         resourceList = res.resources;
-                        Log.d(TAG, "httpSuccess");
+                        Log.d(TAG, "httpSuccess"+res.resources);
 //                        Message message = new Message();
 //                        message.what = UPDATE_TEXT1;
 //                        handler.sendMessage(message);

@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.yzt.wm_english.HttpUtil;
+import com.example.yzt.wm_english.Units.HttpUtil;
 import com.example.yzt.wm_english.R;
-import com.example.yzt.wm_english.ToastUtils;
+import com.example.yzt.wm_english.Units.ToastUtils;
 import com.example.yzt.wm_english.main.MainActivity;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;

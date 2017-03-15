@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.yzt.wm_english.HttpUtil;
+import com.example.yzt.wm_english.Units.HttpUtil;
 import com.example.yzt.wm_english.R;
-import com.example.yzt.wm_english.ToastUtils;
+import com.example.yzt.wm_english.Units.ToastUtils;
 import com.example.yzt.wm_english.login.Status;
 import com.example.yzt.wm_english.main.MainActivity;
 import com.google.gson.Gson;
