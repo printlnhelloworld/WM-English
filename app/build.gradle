@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.example.yzt.wm_english"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -27,6 +27,7 @@ android {
                             'src/main/res/layouts/main/talking',
                             'src/main/res/layouts/main/listening',
                             'src/main/res/layouts/main/listening/shortDialog',
+                            'src/main/res/layouts/main/listening/tv',
                             'src/main/res/layouts/main/personal',
                             'src/main/res/layouts/main/search',
                             'src/main/res/layouts/register',
@@ -53,4 +54,6 @@ dependencies {
     compile 'com.android.support:support-v4:25.2.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'fm.jiecao:jiecaovideoplayer:5.5.2'
+
 }

@@ -20,59 +20,50 @@ android:background="#F6F2FB">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="#FFFFFF">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textSize="16sp"
-                android:layout_alignParentLeft="true"
-                android:text="短对话"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:textSize="16sp"
-                android:layout_marginRight="10dp"
-                android:text="更多资源>"/>
-        </RelativeLayout>
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/short_dialog1"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight='1'
-                android:scaleType="centerCrop"/>
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/short_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"/>
+            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/short_dialog2"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight='1'
-                android:scaleType="centerCrop"/>
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/long_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"/>
+            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/short_dialog3"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight='1'
-                android:scaleType="centerCrop"/>
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/news_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"/>
+            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/short_dialog4"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight='1'
-                android:scaleType="centerCrop"/>
+
+
 
         </LinearLayout>
     </LinearLayout>

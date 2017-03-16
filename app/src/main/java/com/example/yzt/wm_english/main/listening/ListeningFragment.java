@@ -39,10 +39,9 @@ import okhttp3.Response;
 public class ListeningFragment extends Fragment {
     private static final String TAG = "ListeningFragment";
     private RollPagerView mRollViewPager;
-    private ImageView shortDialogue1;
-    private ImageView shortDialogue2;
-    private ImageView shortDialogue3;
-    private ImageView shortDialogue4;
+    private ImageView shortDialogue;
+    private ImageView longDialogue;
+    private ImageView newsDialogue;
     private List<Mainres.Image> bannerPictureURLs = new ArrayList<>();
     private List<Mainres.Resource> resourceList = new ArrayList<>();
 
@@ -136,15 +135,13 @@ public class ListeningFragment extends Fragment {
     }
 
     private void initShortDialogue(View view) {
-        shortDialogue1 = (ImageView) view.findViewById(R.id.short_dialog1);
-        shortDialogue2 = (ImageView) view.findViewById(R.id.short_dialog2);
-        shortDialogue3 = (ImageView) view.findViewById(R.id.short_dialog3);
-        shortDialogue4 = (ImageView) view.findViewById(R.id.short_dialog4);
+        shortDialogue = (ImageView) view.findViewById(R.id.short_dialog);
+        longDialogue = (ImageView) view.findViewById(R.id.long_dialog);
+        newsDialogue = (ImageView) view.findViewById(R.id.news_dialog);
 
-        shortDialogue1.setImageResource(R.drawable.img1);
-        shortDialogue2.setImageResource(R.drawable.img2);
-        shortDialogue3.setImageResource(R.drawable.img3);
-        shortDialogue4.setImageResource(R.drawable.img4);
+        shortDialogue.setImageResource(R.drawable.img1);
+        longDialogue.setImageResource(R.drawable.img2);
+        newsDialogue.setImageResource(R.drawable.img3);
     }
     private void initPhotoCarousel(View view) {
 

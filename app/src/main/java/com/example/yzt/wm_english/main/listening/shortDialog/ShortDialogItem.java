@@ -83,7 +83,6 @@ public class ShortDialogItem extends AppCompatActivity {
             case R.id.write:
                 break;
             case android.R.id.home:
-                player.stop();
                 finish();
             default:
                 break;
@@ -189,7 +188,13 @@ public class ShortDialogItem extends AppCompatActivity {
         super.onBackPressed();
         player.stop();
     }
-//    class DownloadTask extends AsyncTask<String, Integer, Integer> {
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        player.stop();
+    }
+    //    class DownloadTask extends AsyncTask<String, Integer, Integer> {
 //
 //        public static final int TYPE_SUCCESS = 0;
 //        public static final int TYPE_FAILED = 1;
