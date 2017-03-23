@@ -1,6 +1,7 @@
 package com.example.yzt.wm_english.main;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -133,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (index) {
             case 0:
 // firstImage.setImageResource(R.drawable.XXXX); 需要的话自行修改
-                firstText.setTextColor(dark);
-                firstLayout.setBackgroundColor(gray);
+                firstText.setTextColor(Color.rgb(0, 227, 129));
+                firstImage.setImageResource(R.drawable.listening2_icon);
 // 如果fg1为空，则创建一个并添加到界面上
                 if (fg1 == null) {
                     fg1 = new ListeningFragment();
@@ -147,8 +148,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 1:
 // secondImage.setImageResource(R.drawable.XXXX);
-                secondText.setTextColor(dark);
-                secondLayout.setBackgroundColor(gray);
+                secondText.setTextColor(Color.rgb(0, 227, 129));
+                secondImage.setImageResource(R.drawable.talking2_icon);
                 if (fg2 == null) {
                     fg2 = new TalkingFragment();
                     fg2.setArguments(bundle);
@@ -159,8 +160,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 2:
 // thirdImage.setImageResource(R.drawable.XXXX);
-                thirdText.setTextColor(dark);
-                thirdLayout.setBackgroundColor(gray);
+                thirdText.setTextColor(Color.rgb(0, 227, 129));
+                thirdImage.setImageResource(R.drawable.search2_icon);
                 if (fg3 == null) {
                     fg3 = new SearchFragment();
                     fg3.setArguments(bundle);
@@ -171,8 +172,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 3:
 // fourthImage.setImageResource(R.drawable.XXXX);
-                fourthText.setTextColor(dark);
-                fourthLayout.setBackgroundColor(gray);
+                fourthText.setTextColor(Color.rgb(0, 227, 129));
+                fourthImage.setImageResource(R.drawable.my2_icon);
                 if (fg4 == null) {
                     fg4 = new PersonalFragment();
                     fg4.setArguments(bundle);
@@ -189,17 +190,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void clearChoice() {
 // firstImage.setImageResource(R.drawable.XXX);
-        firstText.setTextColor(gray);
-        firstLayout.setBackgroundColor(white);
+        firstText.setTextColor(Color.rgb(132, 132, 132));
+        firstImage.setImageResource(R.drawable.listening_icon);
 // secondImage.setImageResource(R.drawable.XXX);
-        secondText.setTextColor(gray);
-        secondLayout.setBackgroundColor(white);
+        secondText.setTextColor(Color.rgb(132, 132, 132));
+        secondImage.setImageResource(R.drawable.talking_icon);
 // thirdImage.setImageResource(R.drawable.XXX);
-        thirdText.setTextColor(gray);
-        thirdLayout.setBackgroundColor(white);
+        thirdText.setTextColor(Color.rgb(132, 132, 132));
+        thirdImage.setImageResource(R.drawable.search_icon);
 // fourthImage.setImageResource(R.drawable.XXX);
-        fourthText.setTextColor(gray);
-        fourthLayout.setBackgroundColor(white);
+        fourthText.setTextColor(Color.rgb(132, 132, 132));
+        fourthImage.setImageResource(R.drawable.my_icon);
     }
     /**
      * 隐藏Fragment

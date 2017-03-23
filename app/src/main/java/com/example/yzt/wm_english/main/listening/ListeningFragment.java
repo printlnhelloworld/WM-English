@@ -15,11 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.example.yzt.wm_english.Units.HttpUtil;
 import com.example.yzt.wm_english.R;
-import com.example.yzt.wm_english.Units.ToastUtils;
+import com.example.yzt.wm_english.Units.HttpUtil;
 import com.example.yzt.wm_english.main.Mainres;
 import com.example.yzt.wm_english.main.ResourceAdapter;
+import com.example.yzt.wm_english.main.listening.shortDialog.ShortDialog;
+import com.example.yzt.wm_english.main.listening.video.Video;
 import com.google.gson.Gson;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
@@ -44,7 +45,7 @@ public class ListeningFragment extends Fragment {
     private ImageView newsDialogue;
     private List<Mainres.Image> bannerPictureURLs = new ArrayList<>();
     private List<Mainres.Resource> resourceList = new ArrayList<>();
-
+    Mainres res;
     private View view;
 
     @Override
@@ -86,7 +87,7 @@ public class ListeningFragment extends Fragment {
                         String jsonData = response.body().string();
                         Log.d(TAG, jsonData);
                         Gson gson = new Gson();
-                        Mainres res = gson.fromJson(jsonData, Mainres.class);
+                        res = gson.fromJson(jsonData, Mainres.class);
                         bannerPictureURLs = res.images;
                         resourceList = res.resources;
                         Log.d(TAG, "httpSuccess"+res.resources);
@@ -139,9 +140,30 @@ public class ListeningFragment extends Fragment {
         longDialogue = (ImageView) view.findViewById(R.id.long_dialog);
         newsDialogue = (ImageView) view.findViewById(R.id.news_dialog);
 
-        shortDialogue.setImageResource(R.drawable.img1);
-        longDialogue.setImageResource(R.drawable.img2);
-        newsDialogue.setImageResource(R.drawable.img3);
+        Glide.with(ListeningFragment.this).load(res.images.get(0).imgUrl).into(shortDialogue);
+        Glide.with(ListeningFragment.this).load(res.images.get(1).imgUrl).into(longDialogue);
+        Glide.with(ListeningFragment.this).load(res.images.get(2).imgUrl).into(newsDialogue);
+
+        shortDialogue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShortDialog.actionStart(v.getContext(), "http://lincloud.me:8080/app/audition/small");
+            }
+        });
+
+        longDialogue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShortDialog.actionStart(v.getContext(), "http://lincloud.me:8080/app/audition/");
+            }
+        });
+
+        newsDialogue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShortDialog.actionStart(v.getContext(), "http://lincloud.me:8080/app/audition/");
+            }
+        });
     }
     private void initPhotoCarousel(View view) {
 
@@ -178,7 +200,7 @@ public class ListeningFragment extends Fragment {
 
 
         @Override
-        public View getView(ViewGroup container, int position) {
+        public View getView(ViewGroup container, final int position) {
             final int picNo = position + 1;
             ImageView view = new ImageView(container.getContext());
             Glide.with(ListeningFragment.this)
@@ -189,15 +211,13 @@ public class ListeningFragment extends Fragment {
 //                    .placeholder(R.drawable.wrong_name)
 //                    .error(R.drawable.wrong_name).
 //                    into(view);  // 加载网络图片
-            Log.d(TAG, "getView: ");
 //            view.setImageResource(imgs[position]);
             view.setScaleType(ImageView.ScaleType.CENTER_CROP);
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             view.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-
-                    ToastUtils.showToast(getContext(),  "点击了第" + picNo + "张图片");
+                    Video.actionStart(v.getContext(), res.images.get(position).resUrl);
 
                 }
             });

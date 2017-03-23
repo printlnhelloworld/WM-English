@@ -16,12 +16,13 @@ android:background="#F6F2FB">
         android:layout_width="match_parent"
         android:layout_height="180dp"
         app:rollviewpager_play_delay="3000"
+        android:background="@drawable/bg_shadow"
         />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF">
+        android:background="@drawable/bg_shadow">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -30,36 +31,63 @@ android:background="#F6F2FB">
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
                 <ImageView
                     android:id="@+id/short_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
                     android:scaleType="centerCrop"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"
+                    android:text="短对话"
+                    android:textSize="15dp"/>
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:layout_margin="10dp"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/long_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
                     android:scaleType="centerCrop"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"
+                    android:text="长对话"
+                    android:textSize="15dp"/>
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:layout_margin="10dp"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/news_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
                     android:scaleType="centerCrop"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="新闻训练"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"
+                    android:textSize="15dp"/>
             </LinearLayout>
 
 

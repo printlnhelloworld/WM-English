@@ -6,10 +6,28 @@
         android:id="@+id/answer_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <EditText
         android:inputType="text"
         android:id="@+id/answer_input"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:maxLines="1" />
+
+    <ImageView
+        android:id="@+id/judge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/wrong_icon"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        />
+    <TextView
+        android:id="@+id/answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="android"
+        android:visibility="invisible"
+        />
 </LinearLayout>

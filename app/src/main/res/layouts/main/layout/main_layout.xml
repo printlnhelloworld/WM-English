@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
     android:orientation="vertical">
     <!--1. 顶部标题栏-->
     <!--2. 存放四个Fragment-->
@@ -17,7 +16,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#FFFFFF">
+        android:background="@drawable/bg_shadow"
+        >
         <!--四个部分都一样：ImageView + TextView-->
         <RelativeLayout
             android:id="@+id/first_layout"
@@ -34,15 +34,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@android:drawable/ic_menu_compass" />
+                    android:src="@drawable/listening_icon" />
                 <TextView
                     android:id="@+id/first_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
                     android:text="听力"
-                    android:textColor="#7597B3" />
+                    android:textColor="#848484" />
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
@@ -60,15 +59,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@android:drawable/ic_btn_speak_now" />
+                    android:src="@drawable/talking_icon" />
                 <TextView
                     android:id="@+id/second_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
                     android:text="口语"
-                    android:textColor="#7597B3" />
+                    android:textColor="#848484" />
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
@@ -86,15 +84,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@android:drawable/ic_menu_zoom" />
+                    android:src="@drawable/search_icon" />
                 <TextView
                     android:id="@+id/third_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
                     android:text="搜索"
-                    android:textColor="#7597B3" />
+                    android:textColor="#848484" />
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
@@ -112,15 +109,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@android:drawable/ic_menu_myplaces" />
+                    android:src="@drawable/my_icon" />
                 <TextView
                     android:id="@+id/fourth_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
                     android:text="我的"
-                    android:textColor="#7597B3" />
+                    android:textColor="#848484" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

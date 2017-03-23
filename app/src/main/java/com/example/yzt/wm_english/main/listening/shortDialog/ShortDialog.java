@@ -1,6 +1,8 @@
 package com.example.yzt.wm_english.main.listening.shortDialog;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +22,12 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class ShortDialog extends AppCompatActivity {
-
+    public static void actionStart(Context context, String resUrl) {
+        Intent intent = new Intent(context, ShortDialog.class);
+        intent.putExtra("resUrl", resUrl);
+//        intent.putExtra("news_content", newsContent);
+        context.startActivity(intent);
+    }
     private static final String TAG = "ShortDialog";
     private List<Auditions.Audition> auditionList = new ArrayList<>();
     @Override

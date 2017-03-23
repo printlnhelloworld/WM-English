@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="100dp"
+    android:background="@drawable/bg_shadow"
+    >
     <ImageView
         android:id="@+id/resource_image"
         android:layout_width="100dp"
@@ -18,20 +20,23 @@
                 android:id="@+id/resource_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10dp" />
+                android:textSize="15dp" />
             <TextView
                 android:id="@+id/resource_wordNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/write_icon"
                 android:drawablePadding="10dp"
-                android:layout_marginLeft="20dp"
-                android:textSize="10dp" />
+                android:layout_marginLeft="10dp"
+                android:textSize="15dp"
+                android:visibility="invisible"/>
         </LinearLayout>
         <TextView
             android:id="@+id/resource_elaborate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:padding="10dp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -9,8 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.yzt.wm_english.R;
-import com.example.yzt.wm_english.Units.ToastUtils;
-import com.example.yzt.wm_english.main.listening.shortDialog.ShortDialogItem;
+import com.example.yzt.wm_english.main.listening.video.Video;
 
 import java.util.List;
 
@@ -51,8 +50,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Mainres.Resource resource = mResourceList.get(position);
-                ToastUtils.showToast(v.getContext(), "resUrl = "+resource.resUrl);
-                ShortDialogItem.actionStart(v.getContext(),resource.resUrl);
+                Video.actionStart(v.getContext(), resource.resUrl);
             }
 
         });

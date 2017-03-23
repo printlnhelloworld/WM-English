@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -22,12 +24,13 @@ import com.example.yzt.wm_english.main.listening.Player;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class ShortDialogItem extends AppCompatActivity {
+public class ShortDialogItem extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = "ShortDialogItem";
     private Player player;
 
@@ -38,6 +41,10 @@ public class ShortDialogItem extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Toolbar toolbar;
     private List<String> answersList;
+    private ArrayList<Answer> manswersList = new ArrayList<>();
+    private Button checkOut;
+    private Button nextQues;
+    private AnswerAdapter adapter;
     public static void actionStart(Context context, String resUrl) {
         Intent intent = new Intent(context, ShortDialogItem.class);
         intent.putExtra("resUrl", resUrl);
@@ -54,9 +61,30 @@ public class ShortDialogItem extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_name);
+            actionBar.setHomeAsUpIndicator(R.drawable.home_icon);
         }
         new DownLoadTask().execute();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.check_answer:
+                if (checkOut.getText().equals("查看答案")) {
+                    checkOut.setText("隐藏答案");
+                    for (int i = 0; i < manswersList.size(); i++) {
+                        manswersList.get(i).flag = true;
+                    }
+                } else {
+                    checkOut.setText("查看答案");
+                    for (int i = 0; i < manswersList.size(); i++) {
+                        manswersList.get(i).flag = false;
+                    }
+                }
+                adapter.notifyDataSetChanged();
+
+
+        }
     }
 
     public void initShortDialog() {
@@ -64,6 +92,8 @@ public class ShortDialogItem extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         skbProgress = (SeekBar) this.findViewById(R.id.skbProgress);
         skbProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());
+        checkOut = (Button) findViewById(R.id.check_answer);
+        checkOut.setOnClickListener(this);
         player = new Player(skbProgress);
     }
     @Override
@@ -137,6 +167,9 @@ public class ShortDialogItem extends AppCompatActivity {
                         Gson gson = new Gson();
                         dialogRes = gson.fromJson(jsonData, DialogRes.class);
                         answersList = dialogRes.answer;
+                        for (int i = 0; i < answersList.size(); i++) {
+                            manswersList.add(new Answer(answersList.get(i)));
+                        }
                         Log.d(TAG, answersList.get(0));
 //                        Message message = new Message();
 //                        message.what = UPDATE_TEXT1;
@@ -168,7 +201,7 @@ public class ShortDialogItem extends AppCompatActivity {
                     LinearLayoutManager layoutManager = new LinearLayoutManager(ShortDialogItem.this);
                     layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     recyclerView.setLayoutManager(layoutManager);
-                    AnswerAdapter adapter = new AnswerAdapter(answersList);
+                    adapter = new AnswerAdapter(manswersList);
                     recyclerView.setAdapter(adapter);
                     player.playUrl(dialogRes.auditionUrl);
                     break;

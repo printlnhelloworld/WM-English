@@ -33,6 +33,27 @@
         android:layout_weight="1">
 
     </android.support.v7.widget.RecyclerView>
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <Button
+            android:id="@+id/check_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="70dp"
+            android:text="查看答案"/>
+        <Button
+            android:id="@+id/next_ques"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="70dp"
+            android:text="下一题"/>
+    </RelativeLayout>
     <SeekBar
         android:layout_height="0dp"
         android:layout_width="0dp"
