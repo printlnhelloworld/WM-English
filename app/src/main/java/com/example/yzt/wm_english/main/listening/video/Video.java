@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
@@ -13,6 +15,7 @@ import com.example.yzt.wm_english.Units.HttpUtil;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
@@ -20,8 +23,12 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class Video extends AppCompatActivity {
-    private static final String TAG = "Video";
+    JCVideoPlayerStandard jcVideoPlayerStandard;
+    LinearLayoutManager layoutManager;
+    RecyclerView recyclerView;
 
+    private static final String TAG = "Video";
+    private VideoRes res;
     public static void actionStart(Context context,String resUrl) {
         Intent intent = new Intent(context, Video.class);
         intent.putExtra("resUrl", resUrl);
@@ -32,19 +39,23 @@ public class Video extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-        JCVideoPlayerStandard jcVideoPlayerStandard = (JCVideoPlayerStandard) findViewById(R.id.videoPlayer);
-        jcVideoPlayerStandard.setUp("http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4"
-                , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "demo");
-        Glide.with(Video.this).load("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640").into(jcVideoPlayerStandard.thumbImageView);
+        init();
+        Intent intent = getIntent();
+        String resUrl = intent.getStringExtra("resUrl");
+        new DownLoadTask().execute(resUrl);
     }
 
+    public void init() {
+        jcVideoPlayerStandard = (JCVideoPlayerStandard) findViewById(R.id.videoPlayer);
+        recyclerView = (RecyclerView) findViewById(R.id.comment);
+        layoutManager = new LinearLayoutManager(Video.this);
+    }
     class DownLoadTask extends AsyncTask<String, Integer, Integer> {
 
         @Override
         protected Integer doInBackground(String... params) {
-            Intent intent = getIntent();
-            String resUrl = intent.getStringExtra("resUrl");
-            HttpUtil.get(resUrl, new okhttp3.Callback() {
+
+            HttpUtil.get(params[0], new okhttp3.Callback() {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
@@ -54,7 +65,7 @@ public class Video extends AppCompatActivity {
                         String jsonData = response.body().string();
                         Log.d(TAG, jsonData);
                         Gson gson = new Gson();
-//                        res = gson.fromJson(jsonData, Mainres.class);
+                        res = gson.fromJson(jsonData, VideoRes.class);
 //                        Message message = new Message();
 //                        message.what = UPDATE_TEXT1;
 //                        handler.sendMessage(message);
@@ -72,6 +83,22 @@ public class Video extends AppCompatActivity {
                 }
             });
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            switch (values[0]) {
+                case 1:
+                    jcVideoPlayerStandard.setUp(res.resUrl, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, res.title);
+                    Glide.with(Video.this).load(res.cover).into(jcVideoPlayerStandard.thumbImageView);
+                    layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                    recyclerView.setLayoutManager(layoutManager);
+                    VideoRes videoRes = new VideoRes();
+                    videoRes.comments = new ArrayList<>();
+                    CommentAdapter adapter = new CommentAdapter(videoRes.comments);
+                    recyclerView.setAdapter(adapter);
+            }
+            super.onProgressUpdate(values);
         }
     }
     @Override

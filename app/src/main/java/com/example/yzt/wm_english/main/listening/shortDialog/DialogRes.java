@@ -10,6 +10,7 @@ public class DialogRes {
     public String auditionUrl;
     public String question;
     public List<String> answer;
+    public String nextResUrl;
 
     public void setAuditionUrl(String auditionUrl) {
         this.auditionUrl = auditionUrl;

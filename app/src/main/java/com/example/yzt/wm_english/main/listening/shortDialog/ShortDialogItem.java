@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.yzt.wm_english.R;
 import com.example.yzt.wm_english.Units.HttpUtil;
+import com.example.yzt.wm_english.Units.ToastUtils;
 import com.example.yzt.wm_english.main.listening.Player;
 import com.google.gson.Gson;
 
@@ -63,7 +64,9 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.home_icon);
         }
-        new DownLoadTask().execute();
+        Intent intent = getIntent();
+        String resUrl = intent.getStringExtra("resUrl");
+        new DownLoadTask().execute(resUrl);
     }
 
     @Override
@@ -82,8 +85,14 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
                     }
                 }
                 adapter.notifyDataSetChanged();
-
-
+                break;
+            case R.id.next_ques:
+                actionStart(ShortDialogItem.this,dialogRes.nextResUrl);
+                ToastUtils.showToast(ShortDialogItem.this,"nextResUrl = " + dialogRes.nextResUrl);
+                finish();
+                break;
+            default:
+                break;
         }
     }
 
@@ -94,6 +103,8 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
         skbProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());
         checkOut = (Button) findViewById(R.id.check_answer);
         checkOut.setOnClickListener(this);
+        nextQues = (Button) findViewById(R.id.next_ques);
+        nextQues.setOnClickListener(this);
         player = new Player(skbProgress);
     }
     @Override
@@ -153,9 +164,7 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
 
         @Override
         protected Integer doInBackground(String... params) {
-            Intent intent = getIntent();
-            String resUrl = intent.getStringExtra("resUrl");
-            HttpUtil.get(resUrl, new okhttp3.Callback() {
+            HttpUtil.get(params[0], new okhttp3.Callback() {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
@@ -203,6 +212,8 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
                     recyclerView.setLayoutManager(layoutManager);
                     adapter = new AnswerAdapter(manswersList);
                     recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    Log.d(TAG, "next");
                     player.playUrl(dialogRes.auditionUrl);
                     break;
                 default:

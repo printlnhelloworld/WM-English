@@ -62,8 +62,6 @@ public class ListeningFragment extends Fragment {
         new DownLoadTask().execute();
         Log.d(TAG, "加载前");
 
-
-
         return view;
     }
 

@@ -8,7 +8,7 @@
         android:layout_height="wrap_content">
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
+            android:id="@+id/user_icon"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_centerInParent="true"
@@ -16,6 +16,7 @@
             app:civ_border_color="#FFFFFFFF"
             />
         <TextView
+            android:id="@+id/comment_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
@@ -32,26 +33,26 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp">
             <TextView
-                android:id="@+id/nickName"
+                android:id="@+id/user_name"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/dianzan_num"
+                android:id="@+id/comment_likesNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true" />
             <ImageView
-            android:id="@+id/dianzan"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@mipmap/dianzan"
-            android:layout_toLeftOf="@id/dianzan_num"
-            android:layout_marginRight="15dp"
-            android:layout_centerVertical="true" />
+                android:id="@+id/comment_likes"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/dianzan"
+                android:layout_toLeftOf="@id/comment_likesNum"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
