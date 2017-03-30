@@ -10,7 +10,7 @@ public class VideoRes {
     public String title;
     public String resUrl;
     public String cover;
-    public List<comment> comments;
+    public List<comment> comment;
     public static class comment {
         public String userName;
         public String userIcon;

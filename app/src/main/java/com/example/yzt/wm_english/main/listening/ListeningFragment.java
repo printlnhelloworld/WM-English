@@ -145,21 +145,21 @@ public class ListeningFragment extends Fragment {
         shortDialogue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShortDialog.actionStart(v.getContext(), "http://lincloud.me:8080/app/audition/small");
+                ShortDialog.actionStart(v.getContext(), "http://lincloud.me:8080/app/audition/small", "短对话");
             }
         });
 
         longDialogue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShortDialog.actionStart(v.getContext(), "http://lincloud.me:8080/app/audition/");
+                ShortDialog.actionStart(v.getContext(), "http://lincloud.me:8080/app/audition/", "长对话");
             }
         });
 
         newsDialogue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShortDialog.actionStart(v.getContext(), "http://lincloud.me:8080/app/audition/");
+                ShortDialog.actionStart(v.getContext(), "http://lincloud.me:8080/app/audition/", "新闻训练");
             }
         });
     }

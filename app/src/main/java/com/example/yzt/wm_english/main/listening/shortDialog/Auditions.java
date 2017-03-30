@@ -1,5 +1,7 @@
 package com.example.yzt.wm_english.main.listening.shortDialog;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  */
 
 public class Auditions {
+    @SerializedName("resources")
     public List<Audition> audition;
 
     public static class Audition{
@@ -14,7 +17,7 @@ public class Auditions {
         public String title;
         public String imgPath;
         public String resUrl;
-
+        public String type;
         public void setId(int id) {
             this.id = id;
         }

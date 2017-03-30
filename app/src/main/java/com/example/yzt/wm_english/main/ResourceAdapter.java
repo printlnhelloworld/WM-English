@@ -62,6 +62,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ViewHo
         Mainres.Resource resource = mResourceList.get(position);
         holder.resourceTitle.setText(resource.getTitle());
         Glide.with(holder.resourceView.getContext()).load(resource.getImgUrl()).into(holder.resourceImage);
+//        Glide.with(holder.resourceView.getContext()).load(resource.getImgUrl()).into(holder.resourceImage);
         holder.resourceWordNum.setText(resource.getWordNum()+"字");
         holder.resourceElaborate.setText(resource.getElaborate());
     }

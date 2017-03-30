@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.yzt.wm_english.R;
 import com.example.yzt.wm_english.Units.HttpUtil;
@@ -22,9 +25,10 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class ShortDialog extends AppCompatActivity {
-    public static void actionStart(Context context, String resUrl) {
+    public static void actionStart(Context context, String resUrl, String title) {
         Intent intent = new Intent(context, ShortDialog.class);
         intent.putExtra("resUrl", resUrl);
+        intent.putExtra("title", title);
 //        intent.putExtra("news_content", newsContent);
         context.startActivity(intent);
     }
@@ -34,10 +38,31 @@ public class ShortDialog extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_short_dialog);
+        Intent intent = getIntent();
+        String resUrl = intent.getStringExtra("resUrl");
+        String title = intent.getStringExtra("title");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.home_icon);
+        }
         Log.d(TAG, "onCreate: ");
-        new DownLoadTask().execute();
+
+        new DownLoadTask().execute(resUrl);
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+            default:
+                break;
+        }
+        return true;
+    }
     class DownLoadTask extends AsyncTask<String, Integer, Integer> {
         ProgressDialog dialog = new ProgressDialog(ShortDialog.this);
         @Override
@@ -48,7 +73,7 @@ public class ShortDialog extends AppCompatActivity {
 
         @Override
         protected Integer doInBackground(String... params) {
-            HttpUtil.get("http://lincloud.me:8080/app/audition/small", new okhttp3.Callback() {
+            HttpUtil.get(params[0], new okhttp3.Callback() {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
@@ -57,11 +82,9 @@ public class ShortDialog extends AppCompatActivity {
                     try {
 //                        int id = (int)getArguments().get("id");
                         String jsonData = response.body().string();
-                        Log.d(TAG, jsonData);
                         Gson gson = new Gson();
                         Auditions res = gson.fromJson(jsonData, Auditions.class);
                         auditionList = res.audition;
-                        Log.d(TAG, "httpSuccess"+res.audition.get(0).getId());
 //                        Message message = new Message();
 //                        message.what = UPDATE_TEXT1;
 //                        handler.sendMessage(message);

@@ -15,7 +15,6 @@ import com.example.yzt.wm_english.Units.HttpUtil;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
@@ -93,9 +92,7 @@ public class Video extends AppCompatActivity {
                     Glide.with(Video.this).load(res.cover).into(jcVideoPlayerStandard.thumbImageView);
                     layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     recyclerView.setLayoutManager(layoutManager);
-                    VideoRes videoRes = new VideoRes();
-                    videoRes.comments = new ArrayList<>();
-                    CommentAdapter adapter = new CommentAdapter(videoRes.comments);
+                    CommentAdapter adapter = new CommentAdapter(res.comment);
                     recyclerView.setAdapter(adapter);
             }
             super.onProgressUpdate(values);

@@ -46,6 +46,7 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
     private Button checkOut;
     private Button nextQues;
     private AnswerAdapter adapter;
+    private boolean flag = false;
     public static void actionStart(Context context, String resUrl) {
         Intent intent = new Intent(context, ShortDialogItem.class);
         intent.putExtra("resUrl", resUrl);
@@ -107,8 +108,18 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
         nextQues.setOnClickListener(this);
         player = new Player(skbProgress);
     }
-    @Override
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (flag) {
+            menu.findItem(R.id.store).setIcon(R.drawable.storeactive_icon);
+        } else {
+            menu.findItem(R.id.store).setIcon(R.drawable.store_icon);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
@@ -121,7 +132,8 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
                 String url = dialogRes.auditionUrl;
                 player.playUrl(url);
                 break;
-            case R.id.write:
+            case R.id.store:
+                new CollectTask().execute(dialogRes.colRes);
                 break;
             case android.R.id.home:
                 finish();
@@ -153,7 +165,55 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
             player.mediaPlayer.seekTo(progress);
         }
     }
+    class CollectTask extends AsyncTask<String, Integer, Integer> {
+        @Override
+        protected Integer doInBackground(String... params) {
+            HttpUtil.get(params[0], new okhttp3.Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    try {
+                        String jsonData = response.body().string();
+                        Gson gson = new Gson();
+                        com.example.yzt.wm_english.login.Status status = gson.fromJson(jsonData, com.example.yzt.wm_english.login.Status.class);
+                        publishProgress(status.getStatus());
+                        if (status.getStatus() == 1) {
+                            ToastUtils.showToast(getApplicationContext(), "收藏成功" );
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            switch (values[0]) {
+                case 0:
+                    ToastUtils.showToast(getApplicationContext(), "收藏失败" );
+                case 1:
+                    if (flag) {
+                        flag = false;
+                        ToastUtils.showToast(getApplicationContext(), "取消收藏成功" );
+                        invalidateOptionsMenu();
+                    } else {
+                        flag = true;
+                        ToastUtils.showToast(getApplicationContext(), "收藏成功" );
+                        invalidateOptionsMenu();
+                    }
+                    invalidateOptionsMenu();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     class DownLoadTask extends AsyncTask<String, Integer, Integer> {
         ProgressDialog dialog = new ProgressDialog(ShortDialogItem.this);
         @Override

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.yzt.wm_english.R;
 import com.example.yzt.wm_english.Units.ToastUtils;
+import com.example.yzt.wm_english.main.talking.Dialouge;
 
 import java.util.List;
 
@@ -47,9 +48,15 @@ public class AuditionAdapter extends RecyclerView.Adapter<AuditionAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Auditions.Audition audition = mAuditionList.get(position);
-
-                ShortDialogItem.actionStart(v.getContext(),audition.resUrl);
-                ToastUtils.showToast(v.getContext(), "resUrl = "+audition.resUrl);
+                switch (audition.type) {
+                    case "small":
+                        ShortDialogItem.actionStart(v.getContext(),audition.resUrl);
+                        ToastUtils.showToast(v.getContext(), "resUrl = "+audition.resUrl);
+                        break;
+                    case "dialogue":
+                        Dialouge.actionStart(v.getContext(), audition.resUrl);
+                        ToastUtils.showToast(v.getContext(), "resUrl = "+audition.resUrl);
+                }
             }
 
         });

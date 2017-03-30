@@ -8,9 +8,9 @@
         app:showAsAction="ifRoom">
     </item>
     <item
-        android:id="@+id/write"
-        android:icon="@mipmap/write_icon"
-        android:title="Write"
+        android:id="@+id/store"
+        android:icon="@drawable/store_icon"
+        android:title="store"
         app:showAsAction="ifRoom">
 
     </item>

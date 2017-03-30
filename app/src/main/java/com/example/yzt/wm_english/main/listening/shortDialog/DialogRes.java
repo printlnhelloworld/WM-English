@@ -11,7 +11,8 @@ public class DialogRes {
     public String question;
     public List<String> answer;
     public String nextResUrl;
-
+    public String collection;
+    public String colRes;
     public void setAuditionUrl(String auditionUrl) {
         this.auditionUrl = auditionUrl;
     }
