@@ -1,11 +1,10 @@
 package com.example.yzt.wm_english.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -13,8 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.yzt.wm_english.Units.HttpUtil;
 import com.example.yzt.wm_english.R;
+import com.example.yzt.wm_english.Units.HttpUtil;
 import com.example.yzt.wm_english.Units.ToastUtils;
 import com.example.yzt.wm_english.main.MainActivity;
 import com.google.android.gms.appindexing.Action;
@@ -34,21 +33,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private EditText password;
     public static final int UPDATE_TEXT1 = 1;
     public static final int UPDATE_TEXT2 = 2;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UPDATE_TEXT1:
-                    ToastUtils.showToast(Login.this,"网络连接超时");
-                    break;
-                case UPDATE_TEXT2:
-                    ToastUtils.showToast(Login.this,"请输入正确的账号和密码");
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
+    String usernameText;
+    String passwordText;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -76,60 +63,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_Button:
-                String usernameText = username.getText().toString();
-                String passwordText = password.getText().toString();
+                usernameText = username.getText().toString();
+                passwordText = password.getText().toString();
                 //验证邮箱和密码是否符合格式
                 if (!(Validator.checkEmail(usernameText) || Validator.checkPassword(passwordText))) {
                     ToastUtils.showToast(Login.this, "请输入正确的用户名/邮箱和密码");
                 } else {
-                    //账号密码生成json字符串
-//                    RequestBody requestBody = new FormBody.Builder()
-//                            .add("account",usernameText ).add("password", passwordText)
-//                            .build();
-                    LoginAccount loginAccount = new LoginAccount(usernameText, passwordText);
-                    Gson gson = new Gson();
-                    String json = gson.toJson(loginAccount);
-                    //向后台传送登录的账号和密码并获取返回值
-                    HttpUtil.postJson("http://lincloud.me:8080/app/app_login", json, new okhttp3.Callback() {
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            //成功获取返回值;
-                            try {
-                                Gson gson = new Gson();
-                                //OkHttp请求回调中response.body().string()只能有效调用一次
-                                String jsonData = response.body().string();
-                                Log.d(TAG, jsonData);
-                                Status resJson = gson.fromJson(jsonData, Status.class);
-                                if (resJson.getStatus() == 0) {
-                                    Message message = new Message();
-                                    message.what = UPDATE_TEXT2;
-                                    handler.sendMessage(message);
-                                } else if (resJson.getStatus() == 1 ) {
-                                    SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
-                                    editor.putInt("id", resJson.getid());
-                                    editor.apply();
-                                    Intent intent = new Intent(Login.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.d(TAG, "Gson解析错误");
-                            }
-
-
-                        }
-
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            //传送失败
-                            Message message = new Message();
-                            message.what = UPDATE_TEXT1;
-                            handler.sendMessage(message);
-                            e.printStackTrace();
-                        }
-                    });
-                    Log.d(TAG, json);
+                    new DownloadTask().execute();
                 }
                 break;
             case R.id.register_Button:
@@ -143,7 +83,74 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 break;
         }
     }
+    class DownloadTask extends AsyncTask<String, Integer, Integer> {
+        ProgressDialog dialog = new ProgressDialog(Login.this);
+        @Override
+        protected void onPreExecute() {
+            dialog.show();
+            dialog.setMessage("Loading...");
+        }
 
+        @Override
+        protected Integer doInBackground(String... params) {
+            //账号密码生成json字符串
+//                    RequestBody requestBody = new FormBody.Builder()
+//                            .add("account",usernameText ).add("password", passwordText)
+//                            .build();
+            LoginAccount loginAccount = new LoginAccount(usernameText, passwordText);
+            Gson gson = new Gson();
+            String json = gson.toJson(loginAccount);
+            //向后台传送登录的账号和密码并获取返回值
+            HttpUtil.postJson("http://lincloud.me:8080/app/app_login", json, new okhttp3.Callback() {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //成功获取返回值;
+                    try {
+                        Gson gson = new Gson();
+                        //OkHttp请求回调中response.body().string()只能有效调用一次
+                        String jsonData = response.body().string();
+                        Log.d(TAG, jsonData);
+                        com.example.yzt.wm_english.login.Status resJson = gson.fromJson(jsonData, com.example.yzt.wm_english.login.Status.class);
+                        publishProgress(resJson.getStatus());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "Gson解析错误");
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    //传送失败
+                    publishProgress(2);
+                }
+            });
+            Log.d(TAG, json);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            switch (values[0]) {
+                case 0:
+                    ToastUtils.showToast(Login.this, "请输入正确的账号和密码");
+                    break;
+                case 1:
+                    Intent intent = new Intent(Login.this,MainActivity.class);
+                    startActivity(intent);
+                    dialog.dismiss();
+                    finish();
+                    break;
+                case 2:
+                    ToastUtils.showToast(Login.this, "网络连接超时");
+                    dialog.dismiss();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
 
 

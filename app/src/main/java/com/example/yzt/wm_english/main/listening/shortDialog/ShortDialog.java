@@ -3,6 +3,7 @@ package com.example.yzt.wm_english.main.listening.shortDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -50,8 +51,9 @@ public class ShortDialog extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.home_icon);
         }
         Log.d(TAG, "onCreate: ");
-
-        new DownLoadTask().execute(resUrl);
+        SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+        int id = pref.getInt("id", 0);
+        new DownLoadTask().execute(resUrl+"?userId="+id);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -82,6 +84,7 @@ public class ShortDialog extends AppCompatActivity {
                     try {
 //                        int id = (int)getArguments().get("id");
                         String jsonData = response.body().string();
+                        Log.d(TAG, jsonData);
                         Gson gson = new Gson();
                         Auditions res = gson.fromJson(jsonData, Auditions.class);
                         auditionList = res.audition;
@@ -116,6 +119,7 @@ public class ShortDialog extends AppCompatActivity {
                     recyclerView.setLayoutManager(layoutManager);
                     AuditionAdapter adapter = new AuditionAdapter(auditionList);
                     recyclerView.setAdapter(adapter);
+                    dialog.dismiss();
                     break;
                 default:
             }
@@ -123,7 +127,7 @@ public class ShortDialog extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Integer integer) {
-            dialog.dismiss();
+
         }
     }
 }

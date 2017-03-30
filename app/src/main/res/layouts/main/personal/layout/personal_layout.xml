@@ -79,7 +79,7 @@
                 android:layout_alignParentTop="true"
                 android:background="#CCCCCC"/>
             <LinearLayout
-                android:id="@+id/my_stor"
+                android:id="@+id/my_store"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -151,6 +151,7 @@
             android:layout_alignParentTop="true"
             android:background="#CCCCCC"/>
         <LinearLayout
+            android:id="@+id/my_wallet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">

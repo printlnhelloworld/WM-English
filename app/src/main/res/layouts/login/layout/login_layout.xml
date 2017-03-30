@@ -9,7 +9,7 @@
         android:layout_width="1000dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:src="@drawable/logo"
+        android:src="@drawable/appicon"
         />
     <EditText
         android:id="@+id/username"
@@ -19,7 +19,6 @@
         android:layout_marginRight="30dp"
         android:maxLines="1"
         android:singleLine="true"
-        android:maxLength="16"
         android:hint="用户名/邮箱"/>
     <EditText
         android:id="@+id/password"
@@ -29,7 +28,6 @@
         android:layout_marginRight="30dp"
         android:maxLines="1"
         android:singleLine="true"
-        android:maxLength="16"
         android:hint="请输入密码"/>
     <Button
         android:id="@+id/forgetPwd_Button"

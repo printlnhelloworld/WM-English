@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_short_dialog"
+    android:id="@+id/mystore_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.yzt.wm_english.main.listening.shortDialog.ShortDialog">
+
+    tools:context="com.example.yzt.wm_english.main.personal.MyStore">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_height="?attr/actionBarSize"
@@ -19,12 +20,4 @@
         android:layout_height="0.1dp"
         android:layout_alignParentTop="true"
         android:background="#818181"/>
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:id="@+id/audition_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.yzt.wm_english.main.listening.shortDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -67,7 +68,9 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
         }
         Intent intent = getIntent();
         String resUrl = intent.getStringExtra("resUrl");
-        new DownLoadTask().execute(resUrl);
+        SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+        int id = pref.getInt("id", 0);
+        new DownLoadTask().execute(resUrl+"?userId="+id);
     }
 
     @Override
@@ -133,10 +136,12 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
                 player.playUrl(url);
                 break;
             case R.id.store:
+                Log.d(TAG, dialogRes.colRes);
                 new CollectTask().execute(dialogRes.colRes);
                 break;
             case android.R.id.home:
                 finish();
+                break;
             default:
                 break;
         }
@@ -173,12 +178,10 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
                 public void onResponse(Call call, Response response) throws IOException {
                     try {
                         String jsonData = response.body().string();
+                        Log.d(TAG, jsonData);
                         Gson gson = new Gson();
                         com.example.yzt.wm_english.login.Status status = gson.fromJson(jsonData, com.example.yzt.wm_english.login.Status.class);
                         publishProgress(status.getStatus());
-                        if (status.getStatus() == 1) {
-                            ToastUtils.showToast(getApplicationContext(), "收藏成功" );
-                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -275,15 +278,12 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
                     adapter.notifyDataSetChanged();
                     Log.d(TAG, "next");
                     player.playUrl(dialogRes.auditionUrl);
+                    dialog.dismiss();
                     break;
                 default:
             }
         }
 
-        @Override
-        protected void onPostExecute(Integer integer) {
-            dialog.dismiss();
-        }
     }
     //重写回车事件
     @Override

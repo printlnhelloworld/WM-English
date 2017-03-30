@@ -69,6 +69,7 @@ public class ListeningFragment extends Fragment {
         ProgressDialog dialog = new ProgressDialog(getContext());
         @Override
         protected void onPreExecute() {
+            Log.d(TAG, "onPreExecute: ");
             dialog.show();
             dialog.setMessage("Loading...");
         }
@@ -122,6 +123,7 @@ public class ListeningFragment extends Fragment {
                     recyclerView.setLayoutManager(layoutManager);
                     ResourceAdapter adapter = new ResourceAdapter(resourceList);
                     recyclerView.setAdapter(adapter);
+                    dialog.dismiss();
                     break;
                 default:
             }
@@ -129,7 +131,6 @@ public class ListeningFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Integer integer) {
-            dialog.dismiss();
         }
     }
 

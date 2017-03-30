@@ -1,7 +1,9 @@
 package com.example.yzt.wm_english.main.listening.video;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.util.Log;
 import com.bumptech.glide.Glide;
 import com.example.yzt.wm_english.R;
 import com.example.yzt.wm_english.Units.HttpUtil;
+import com.example.yzt.wm_english.Units.ToastUtils;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -41,7 +44,9 @@ public class Video extends AppCompatActivity {
         init();
         Intent intent = getIntent();
         String resUrl = intent.getStringExtra("resUrl");
-        new DownLoadTask().execute(resUrl);
+        SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+        int id = pref.getInt("id", 0);
+        new DownLoadTask().execute(resUrl+"?userId="+id);
     }
 
     public void init() {
@@ -50,6 +55,12 @@ public class Video extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(Video.this);
     }
     class DownLoadTask extends AsyncTask<String, Integer, Integer> {
+        ProgressDialog dialog = new ProgressDialog(Video.this);
+        @Override
+        protected void onPreExecute() {
+            dialog.show();
+            dialog.setMessage("Loading...");
+        }
 
         @Override
         protected Integer doInBackground(String... params) {
@@ -79,6 +90,7 @@ public class Video extends AppCompatActivity {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
+                    publishProgress(2);
                 }
             });
             return null;
@@ -94,6 +106,10 @@ public class Video extends AppCompatActivity {
                     recyclerView.setLayoutManager(layoutManager);
                     CommentAdapter adapter = new CommentAdapter(res.comment);
                     recyclerView.setAdapter(adapter);
+                    dialog.dismiss();
+                    break;
+                case 2:
+                    ToastUtils.showToast(Video.this, "网络连接超时");
             }
             super.onProgressUpdate(values);
         }

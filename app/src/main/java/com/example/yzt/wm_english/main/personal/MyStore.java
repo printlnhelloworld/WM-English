@@ -10,9 +10,9 @@ import android.view.MenuItem;
 
 import com.example.yzt.wm_english.R;
 
-public class MyInformation extends AppCompatActivity {
-    public static void actionStart(Context context,String resUrl) {
-        Intent intent = new Intent(context, MyInformation.class);
+public class MyStore extends AppCompatActivity {
+    public static void actionStart(Context context, String resUrl) {
+        Intent intent = new Intent(context, MyStore.class);
         intent.putExtra("resUrl", resUrl);
         context.startActivity(intent);
     }
@@ -20,12 +20,12 @@ public class MyInformation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.myinformation_layout);
+        setContentView(R.layout.mystore_layout);
         initToolbar();
     }
     public void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("我的资料");
+        toolbar.setTitle("我的钱包");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

@@ -3,6 +3,7 @@ package com.example.yzt.wm_english.main.talking;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -217,7 +218,10 @@ public class Dialouge extends AppCompatActivity {
     public void initMsgs() {
         Intent intent = getIntent();
         String resUrl = intent.getStringExtra("resUrl");
-        new DownLoadTask().execute(resUrl);
+        SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+        int id = pref.getInt("id", 0);
+        ToastUtils.showToast(Dialouge.this, id+"");
+        new DownLoadTask().execute(resUrl+"?userId="+id);
     }
 
     public void initToolbar() {
@@ -251,7 +255,7 @@ public class Dialouge extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.store:
-                new CollectTask().execute(dialougeItem.colUrl);
+                new CollectTask().execute(dialougeItem.colRes);
                 break;
             case android.R.id.home:
                 finish();
@@ -281,9 +285,6 @@ public class Dialouge extends AppCompatActivity {
                         Gson gson = new Gson();
                         com.example.yzt.wm_english.login.Status status = gson.fromJson(jsonData, com.example.yzt.wm_english.login.Status.class);
                         publishProgress(status.getStatus());
-                        if (status.getStatus() == 1) {
-                            ToastUtils.showToast(getApplicationContext(), "收藏成功" );
-                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -373,15 +374,11 @@ public class Dialouge extends AppCompatActivity {
                     msgList.add(msg);
                     adapter.notifyItemChanged(msgList.size() - 1);//有新消息时，刷新ListView中的显示
                     msgRecyclerView.scrollToPosition(msgList.size() - 1);//将ListView定位到最后一行
-
+                    dialog.dismiss();
                     break;
                 default:
             }
         }
 
-        @Override
-        protected void onPostExecute(Integer integer) {
-            dialog.dismiss();
-        }
     }
 }

@@ -112,6 +112,7 @@ public class TalkingFragment extends Fragment {
                     recyclerView.setLayoutManager(layoutManager);
                     ResourceAdapter adapter = new ResourceAdapter(resourceList);
                     recyclerView.setAdapter(adapter);
+                    dialog.dismiss();
                     break;
                 default:
             }
@@ -119,7 +120,6 @@ public class TalkingFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Integer integer) {
-            dialog.dismiss();
         }
     }
 

@@ -11,6 +11,6 @@ public class DialougeItem {
     public List<String> question;
     public List<String> answer;
     public int collection;
-    public String colUrl;
+    public String colRes;
 
 }
