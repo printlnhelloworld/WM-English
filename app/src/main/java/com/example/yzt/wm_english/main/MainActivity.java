@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.yzt.wm_english.R;
 import com.example.yzt.wm_english.main.listening.ListeningFragment;
 import com.example.yzt.wm_english.main.personal.PersonalFragment;
+import com.example.yzt.wm_english.main.research.SearchFragment;
 import com.example.yzt.wm_english.main.talking.TalkingFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

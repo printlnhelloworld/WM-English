@@ -2,5 +2,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.SearchView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="热门搜索"/>
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/label1"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:background="@drawable/border3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/label2"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:background="@drawable/border3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/label3"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/border3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/search_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="未找到搜索内容"
+        android:visibility="gone"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:id="@+id/audition_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

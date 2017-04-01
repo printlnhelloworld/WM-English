@@ -48,19 +48,12 @@ public class ListeningFragment extends Fragment {
     Mainres res;
     private View view;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.listening_layout, container, false);
         initPhotoCarousel(view);
         new DownLoadTask().execute();
-        Log.d(TAG, "加载前");
 
         return view;
     }

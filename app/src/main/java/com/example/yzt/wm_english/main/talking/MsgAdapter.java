@@ -91,7 +91,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder>  {
             holder.leftLayout.setVisibility(View.GONE);
             holder.rightLayout.setVisibility(View.VISIBLE);
 //            holder.rightMsg.setText(msg.getContent());
-            holder.rightMsg.setText("YZT");
+            holder.rightMsg.setText("");
 
         }
     }

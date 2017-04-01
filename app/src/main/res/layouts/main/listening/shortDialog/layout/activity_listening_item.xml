@@ -6,13 +6,12 @@
     android:id="@+id/activity_listening_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c9cfc3"
+    android:background="#FFFFFFFF"
     tools:context="com.example.yzt.wm_english.main.listening.shortDialog.ShortDialogItem">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#c9cfc3"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -29,7 +28,7 @@
         android:textSize="18dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:textColor="#FF39654C"
+
         android:typeface="serif"
         android:textStyle="bold"
         />

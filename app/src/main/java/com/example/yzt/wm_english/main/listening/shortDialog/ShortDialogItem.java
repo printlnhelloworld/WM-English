@@ -92,7 +92,6 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.next_ques:
                 actionStart(ShortDialogItem.this,dialogRes.nextResUrl);
-                ToastUtils.showToast(ShortDialogItem.this,"nextResUrl = " + dialogRes.nextResUrl);
                 finish();
                 break;
             default:
@@ -115,7 +114,7 @@ public class ShortDialogItem extends AppCompatActivity implements View.OnClickLi
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (flag) {
-            menu.findItem(R.id.store).setIcon(R.drawable.storeactive_icon);
+            menu.findItem(R.id.store).setIcon(R.drawable.store3_icon);
         } else {
             menu.findItem(R.id.store).setIcon(R.drawable.store_icon);
         }

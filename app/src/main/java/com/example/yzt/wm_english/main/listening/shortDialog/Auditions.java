@@ -9,6 +9,7 @@ import java.util.List;
  */
 
 public class Auditions {
+    public int total;
     @SerializedName("resources")
     public List<Audition> audition;
 
@@ -18,6 +19,7 @@ public class Auditions {
         public String imgPath;
         public String resUrl;
         public String type;
+        public int free;
         public void setId(int id) {
             this.id = id;
         }

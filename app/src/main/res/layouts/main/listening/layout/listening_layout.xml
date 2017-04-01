@@ -16,7 +16,7 @@ android:background="#F6F2FB">
         android:layout_width="match_parent"
         android:layout_height="180dp"
         app:rollviewpager_play_delay="3000"
-        android:background="@drawable/bg_shadow"
+        android:background="#FFFFFFFF"
         />
     <LinearLayout
         android:orientation="vertical"
@@ -93,6 +93,14 @@ android:background="#F6F2FB">
 
         </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="每日推荐"
+        android:paddingLeft="20dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:background="@drawable/border2"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

@@ -136,7 +136,6 @@ public class Dialouge extends AppCompatActivity {
             //录音结束，filePath为保存路径
             @Override
             public void onStop(String filePath) {
-                Toast.makeText(Dialouge.this, "录音保存在：" + filePath, Toast.LENGTH_SHORT).show();
 
                 Msg msg = new Msg(filePath, Msg.TYPE_SENT);
                 msgList.add(msg);
@@ -220,7 +219,6 @@ public class Dialouge extends AppCompatActivity {
         String resUrl = intent.getStringExtra("resUrl");
         SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
         int id = pref.getInt("id", 0);
-        ToastUtils.showToast(Dialouge.this, id+"");
         new DownLoadTask().execute(resUrl+"?userId="+id);
     }
 
@@ -244,7 +242,7 @@ public class Dialouge extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (flag) {
-            menu.findItem(R.id.store).setIcon(R.drawable.storeactive_icon);
+            menu.findItem(R.id.store).setIcon(R.drawable.store3_icon);
         } else {
             menu.findItem(R.id.store).setIcon(R.drawable.store_icon);
         }

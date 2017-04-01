@@ -25,7 +25,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="8dp"
-                android:text="小明"
                 android:textSize="20sp" />
             <View
                 android:layout_width="match_parent"

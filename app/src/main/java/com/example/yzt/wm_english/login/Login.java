@@ -2,7 +2,7 @@ package com.example.yzt.wm_english.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +16,6 @@ import com.example.yzt.wm_english.R;
 import com.example.yzt.wm_english.Units.HttpUtil;
 import com.example.yzt.wm_english.Units.ToastUtils;
 import com.example.yzt.wm_english.main.MainActivity;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -35,16 +31,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     public static final int UPDATE_TEXT2 = 2;
     String usernameText;
     String passwordText;
+    com.example.yzt.wm_english.login.Status resJson;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
+        init();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+    }
+
+    public void init() {
         Button login_Button = (Button) findViewById(R.id.login_Button);
         login_Button.setOnClickListener(this);
         Button register_Button = (Button) findViewById(R.id.register_Button);
@@ -54,9 +56,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+        usernameText = pref.getString("userName", "");
+        username.setText(usernameText);
+        passwordText = pref.getString("password", "");
+        password.setText(passwordText);
     }
 
     @Override
@@ -83,8 +87,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 break;
         }
     }
+
     class DownloadTask extends AsyncTask<String, Integer, Integer> {
         ProgressDialog dialog = new ProgressDialog(Login.this);
+
         @Override
         protected void onPreExecute() {
             dialog.show();
@@ -110,7 +116,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         //OkHttp请求回调中response.body().string()只能有效调用一次
                         String jsonData = response.body().string();
                         Log.d(TAG, jsonData);
-                        com.example.yzt.wm_english.login.Status resJson = gson.fromJson(jsonData, com.example.yzt.wm_english.login.Status.class);
+                        resJson = gson.fromJson(jsonData, com.example.yzt.wm_english.login.Status.class);
                         publishProgress(resJson.getStatus());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -137,7 +143,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     ToastUtils.showToast(Login.this, "请输入正确的账号和密码");
                     break;
                 case 1:
-                    Intent intent = new Intent(Login.this,MainActivity.class);
+                    SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                    editor.putString("userName", usernameText);
+                    editor.putString("password", passwordText);
+                    editor.putString("nickName", resJson.nickName);
+                    editor.putInt("id", resJson.getid());
+                    editor.apply();
+                    Intent intent = new Intent(Login.this, MainActivity.class);
                     startActivity(intent);
                     dialog.dismiss();
                     finish();
@@ -151,43 +163,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
         }
     }
-
-
-
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Login Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }
+
+
+
+

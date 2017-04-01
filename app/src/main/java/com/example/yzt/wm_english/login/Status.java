@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Status {
+    public String nickName;
     private int status;
     @SerializedName("userId")
     private int id;

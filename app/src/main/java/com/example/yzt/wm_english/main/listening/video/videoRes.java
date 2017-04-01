@@ -16,7 +16,7 @@ public class VideoRes {
         public String userIcon;
         public String comment;
         public String commentTime;
-        public String praiseNum;
+        public int praiseNum;
     }
 
 }

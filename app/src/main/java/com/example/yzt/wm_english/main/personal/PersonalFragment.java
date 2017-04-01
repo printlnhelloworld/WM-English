@@ -1,5 +1,6 @@
 package com.example.yzt.wm_english.main.personal;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.yzt.wm_english.R;
 import com.example.yzt.wm_english.Units.HttpUtil;
@@ -20,15 +22,18 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by YZT on 2017/2/7.
  */
 
 public class PersonalFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "PersonalFragment";
-    LinearLayout myInfo;
-    LinearLayout myWallet;
-    LinearLayout myStore;
+    private LinearLayout myInfo;
+    private LinearLayout myWallet;
+    private LinearLayout myStore;
+    private TextView userName;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +49,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
         myWallet.setOnClickListener(PersonalFragment.this);
         myStore = (LinearLayout) view.findViewById(R.id.my_store);
         myStore.setOnClickListener(PersonalFragment.this);
+        userName = (TextView) view.findViewById(R.id.user_name);
+        SharedPreferences pref = getActivity().getSharedPreferences("data", MODE_PRIVATE);
+        userName.setText(pref.getString("nickName", ""));
     }
 
     @Override

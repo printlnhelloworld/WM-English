@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yzt.wm_english.R;
-import com.example.yzt.wm_english.Units.ToastUtils;
 
 import java.util.List;
 
@@ -58,7 +57,6 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.ViewHolder
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals(mAnswersList.get(holder.getAdapterPosition()).answer)){
                     change(holder);
-                    ToastUtils.showToast(view.getContext(),"hello");
                 }
             }
 
